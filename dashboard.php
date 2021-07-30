@@ -57,9 +57,9 @@
       <a class="btn border-0" id="menu-btn"><i class="bx bx-menu"></i></a>
     </nav>
     <!--End Top Nav -->
-    <h3 class="text-dark p-3">სსიპ "აჭარის მუზეუმი" 🏛️</h3>
     <div class="container">
-      <video width="100%" height="600" autoplay>
+      <h3 class="text-dark p-3">სსიპ "აჭარის მუზეუმი" 🏛️</h3>
+      <video autoplay class="video-player">
         <source src="https://ajaramuseums.ge/assets/video/video_last_end.mp4" type="video/mp4">
         <source src="https://ajaramuseums.ge/assets/video/video_last_end.mp4" type="video/ogg">
         Your browser does not support the video tag.

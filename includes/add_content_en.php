@@ -5,15 +5,30 @@
   $stmt->execute();
   $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+  
+
   $errors = [];
   if(isset($_POST['submit_en'])){
     $title = $_POST['title'];
     $museum = $_POST['museum'];
-    $exp_img = $_POST['exp_img'];
+    $exp_img = $_POST['exp_img'] ?? null;
     $description = $_POST['description'];
+    
+    $image = $_FILES['exp_img'] ?? null;
+    $imgPathEn = '';
+
+    if(!is_dir('images')){
+      mkdir('./images');
+    }
+
+    if($image){
+      $imgPathEn = 'images/'.randomString(8).'/'.$image['name'];
+      mkdir(dirname($imgPathEn));
+      move_uploaded_file($image['tmp_name'], $imgPathEn); //image tmp name
+    }
 
     if(!$title){
-        $errors[] = 'ექსპონატის სახელი სავალდებულოა';
+      $errors[] = 'ექსპონატის სახელი სავალდებულოა';
     }
 
     if(!$description){
@@ -25,13 +40,24 @@
     
         $insertRes->bindValue(':title', $title);
         $insertRes->bindValue(':museum', intval($museum));
-        $insertRes->bindValue(':exp_img', '');
+        $insertRes->bindValue(':exp_img', $imgPathEn);
         $insertRes->bindValue(':description', $description);
-        $insertRes->bindValue(':qr_image', '');
+        $insertRes->bindValue(':qr_image', 'you can get more information from our museum guide');
 
         $insertRes->execute();
     }
   }
+
+  function randomString($n){
+    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $str = '';
+    for($i = 0; $i < $n; $i++){
+      $index = rand(0, strlen($chars) - 1);
+      $str .= $chars[$index];
+    }
+    return $str;
+  }
+
 ?>
 
 <div class="container mt-2">
@@ -44,7 +70,7 @@
   <?php } ?>
 </div>
 
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
 	<div class="container mt-4">
 		<!-- CONTENT -->
 		<div class="row">

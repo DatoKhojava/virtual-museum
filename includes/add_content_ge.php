@@ -6,11 +6,25 @@
   $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   $errors = [];
+
   if(isset($_POST['submit'])){
     $title = $_POST['title'];
     $museum = $_POST['museum'];
-    $exp_img = $_POST['exp_img'];
+    $exp_img = $_POST['exp_img'] ?? null;
     $description = $_POST['description'];
+
+    $image = $_FILES['exp_img'] ?? null;
+    $imgPath = '';
+
+    if(!is_dir('images')){
+      mkdir('./images');
+    }
+
+    if($image){
+      $imgPath = 'images/'.randString(8).'/'.$image['name'];
+      mkdir(dirname($imgPath));
+      move_uploaded_file($image['tmp_name'], $imgPath); //image tmp name
+    }
 
     if(!$title){
         $errors[] = 'ექსპონატის სახელი სავალდებულოა';
@@ -25,12 +39,22 @@
     
         $insertRes->bindValue(':title', $title);
         $insertRes->bindValue(':museum', intval($museum));
-        $insertRes->bindValue(':exp_img', '');
+        $insertRes->bindValue(':exp_img', $imgPath);
         $insertRes->bindValue(':description', $description);
-        $insertRes->bindValue(':qr_image', '');
+        $insertRes->bindValue(':qr_image', 'შეგიძლიათ მიიღოთ უფრო მეტი ინფორმაცია, ჩვენი მუზეუმის გიდისგან.');
 
         $insertRes->execute();
     }
+  }
+
+  function randString($n){
+    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $str = '';
+    for($i = 0; $i < $n; $i++){
+      $index = rand(0, strlen($chars) - 1);
+      $str .= $chars[$index];
+    }
+    return $str;
   }
 ?>
 
@@ -44,7 +68,7 @@
   <?php } ?>
 </div>
 
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
 	<div class="container mt-4">
 		<!-- CONTENT -->
 		<div class="row">

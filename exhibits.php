@@ -71,40 +71,38 @@
     <div class="container">
       <h3 class="text-dark p-3">ექსპონატები</h3>
       <div class="row">
-        <?php foreach($items as $key => $row ): ?>
-          <div class="col-md-4 ">
-            <div class="card mt-4">
-              <img src="<?=$row['img']?>" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title small-text"><?=$row['title']?></h5>
-                <p class="card-text"><?=$row['mname']?></p>
-                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="onClickHandle()"><img src="qr.png" width="20px" height="auto"/></button>
-                <a href="del.php?id=<?php echo $row['id'] ?>" type="button" class="btn btn-outline-danger"><i class='bx bx-x-circle'></i></a>
+          <?php foreach($items as $key => $row ): ?>
+            <div class="col-md-4 ">
+              <div class="card mt-4 card-img-top"> <img src="<?=$row['img']?>">
+                <div class="card-body">
+                  <h5 class="card-title small-text"><?=$row['title']?></h5>
+                  <p class="card-text">
+                    <?=$row['mname']?>
+                  </p>
+                  <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop-<?=$key?>"><img src="qr.png" width="20px" height="auto" /></button> <a href="del.php?id=<?php echo $row['id'] ?>" type="button" class="btn btn-outline-danger"><i class='bx bx-x-circle'></i></a> </div>
               </div>
             </div>
-          </div>
-        <?php endforeach;?>
+            <div class="modal fade" id="staticBackdrop-<?=$key?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">qr დაგენერირდა</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=http://localhost/virtualMuseum/index.php?id=<?=$row['id']?>&choe=UTF-8" title="Link to Google.com" /> </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">გამოსვლა</button>
+                    <!-- <button type="button" class="btn btn-primary">გადმოწერა</button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <?php endforeach;?>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">qr დაგენერირდა</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-          <div class="modal-body">
-            <div id="qrcode"></div>
-          </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">გამოსვლა</button>
-          <button type="button" class="btn btn-primary">გადმოწერა</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- bootstrap js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
@@ -127,13 +125,6 @@
       tinycomments_author: 'Author name',
    });
   </script>
-
-  <!-- QR GENERATOR SCRIPT -->
-  <script src="qrGenerator.js"></script>
-
-  <!-- INCLUDES -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
 
 </body>
